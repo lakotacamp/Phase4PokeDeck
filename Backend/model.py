@@ -8,24 +8,18 @@ from config import db, bcrypt
 Base = declarative_base()
 
 
-class User(db.Model, SerializerMixin):
-    __tablename__ = 'users'
+class Trainer(db.Model, SerializerMixin):
+    __tablename__ = 'trainers'
 # id that is an integer type and a primary key.
     id = db.Column(db.Integer, primary_key = True)
-# username that is a String type.
-    username = db.Column(db.String, unique = True, nullable = False)
+# trainer that is a String type.
+    trainer = db.Column(db.String, unique = True, nullable = False)
 # _password_hash that is a String type.
     _password_hash = db.Column(db.String)
-    """
-# image_url that is a String type.
-    image_url = db.Column(db.String)
-# bio that is a String type.
-    bio = db.Column(db.String)
-    """
 
-    recipes = db.relationship('Recipe', back_populates = "user")
+    poke_teams = db.relationship('PokeTeam', back_populates = "trainer")
     
-    serialize_rules = ('-recipes.user',)
+    serialize_rules = ('-poke_teams.trainer',)
 
     @hybrid_property
     def password_hash(self):
@@ -40,12 +34,12 @@ class User(db.Model, SerializerMixin):
     def authenticate(self,password):
         return bcrypt.check_password_hash(self._password_hash, password.encode('utf-8'))
     
-    @validates('username')
-    def validate_username(self,key,value):
+    @validates('trainer')
+    def validate_trainer(self,key,value):
         if value:
             return value
         else:
-            raise ValueError("Not valid username")
+            raise ValueError("Not valid trainer")
 
 
 class Team(Base,SerializerMixin):
@@ -53,6 +47,9 @@ class Team(Base,SerializerMixin):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String)
     poke_teams = db.relationship("PokeTeam", back_populates="team")
+    serialize_rules=('-poke_teams.team',)
+    trainer_id = db.Column(db.Integer, db.ForeignKey("trainers.id"))
+    trainer = db.relationship("Trainer", back_populates="team")
 
     def __repr__(self):
         return repr(f"{self.name}")
@@ -62,20 +59,24 @@ class Pokemon(Base):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String)
     poke_teams = db.relationship("PokeTeam", back_populates="pokemon")
+    serialize_rules=('-poke_teams.pokemon',)
 
     def __repr__(self):
         return repr(f"{self.name}")
 
+#PokeTeam is not your actual team. Poketeam is a locker for keeping your teams in. Teams is the most important table.
 class PokeTeam(Base):
     __tablename__ = "poke_teams"
     id = db.Column(db.Integer, primary_key = True)
     team_id = db.Column(db.Integer, ForeignKey("teams.id"))
     team = db.relationship("Team", back_populates="poke_teams")
     pokemon_id = db.Column(db.Integer, ForeignKey("pokemons.id"))
-    pokemon = db.relationship("Pokemon", back_populates="pokemons")
+    pokemon = db.relationship("Pokemon", back_populates="poke_teams")
+
+    serialize_rules = ('-trainer.poke_teams','')
 
     def __repr__(self):
-        return repr(f"{self.name}")
+        return repr(f"{self.team}, {self.pokemon}, {self.trainer}")
 
 
 #engine = create_engine("sqlite:///darktide_builder.db")
