@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import NavBar from "./NavBar";
-import Login from "../pages/Login";
-import MainPage from "../pages/main-page";
-import CreateTeam from "../pages/create-team";
+import Login from "/src/pages/Login";
+import MainPage from "/src/pages/main-page";
+import CreateTeam from "/src/pages/create-team";
 
 function App() {
   const [user, setUser] = useState(null);
