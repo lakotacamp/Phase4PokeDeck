@@ -19,8 +19,8 @@ def create_trainers():
     trainers = []
     for _ in range(5):
         t = Trainer(
-            trainer=fake.user_name(), 
-            password_hash='hashed_password',  
+            username=fake.user_name(), 
+            _password_hash='hashed_password',  
         )
         trainers.append(t)
 
@@ -29,6 +29,7 @@ def create_trainers():
 def create_poke_teams(teams, pokemons, trainers):
     poke_teams = []
     for _ in range(10):  
+        print(teams)
         team = random.choice(teams)
         pokemon = random.choice(pokemons)
         trainer = random.choice(trainers)
@@ -36,7 +37,6 @@ def create_poke_teams(teams, pokemons, trainers):
         pt = PokeTeam(
             team=team,
             pokemon=pokemon,
-            trainer=trainer,
         )
         poke_teams.append(pt)
 
@@ -74,7 +74,6 @@ def seed_pokemon_data():
 
     if response.status_code: 
         pokemon_data = response.json()
-        print(pokemon_data)
         for pokemon in pokemon_data['results']:
             name = pokemon['name']
             new_pokemon = Pokemon(**Pokemon(name=name).to_dict())
@@ -86,7 +85,8 @@ def seed_pokemon_data():
         print('Failed to fetch Pokemon data')
 
 if __name__ == '__main__':
-    seed_pokemon_data()
-    seed_trainers_data()
-    seed_poke_teams_data()
-    seed_teams_data()
+    with app.app_context():
+        seed_pokemon_data()
+        seed_trainers_data()
+        seed_teams_data()
+        seed_poke_teams_data()
