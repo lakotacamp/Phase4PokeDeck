@@ -12,14 +12,14 @@ DATABASE = os.environ.get(
     "DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
 
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.json.compact = False
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.json.compact = False
 
-migrate = Migrate(app, db)
+# migrate = Migrate(app, db)
 
-db.init_app(app)
+# db.init_app(app)
 
 
 @app.route('/')
@@ -38,16 +38,19 @@ def signup():
     if request.method == 'POST':
         try:
             data = request.get_json()
+            print(data)
             new_trainer = Trainer(
-                trainer = data["trainer"],
+                username = data["username"],
+                 _password_hash = data["password"]
                 
             )
             new_trainer.password_hash = data["password"]
             db.session.add(new_trainer)
             db.session.commit()
-            session['tainer_id'] = new_trainer.id
+            session['trainer_id'] = new_trainer.id
             return new_trainer.to_dict(rules = ('-teams','-password_hash')),201
         except Exception as e:
+            print(e)
             return {"Error": "Could not make trainer"},422
         
 @app.route('/checksession',methods=['GET'])

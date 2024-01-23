@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
-import NavBar from "./NavBar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+// import NavBar from "./NavBar";
 import Login from "/src/pages/Login";
-import MainPage from "/src/pages/main-page";
-import CreateTeam from "/src/pages/create-team";
+import MainPage from "/src/pages/MainPage";
+// import CreateTeam from "/src/pages/create-team";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -19,22 +19,36 @@ function App() {
 
   if (!user) return <Login onLogin={setUser} />;
 
-  return (
-    <>
-     <Logo>PokeDecks</Logo>
-      <NavBar user={user} setUser={setUser} />
-      <main>
-        <Switch>
-          <Route path="/new">
-            <CreateTeam user={user} />
-          </Route>
-          <Route path="/">
-            <MainPage />
-          </Route>
-        </Switch>
-      </main>
-    </>
-  );
-}
+//   return (
+//     <>
+//      <Logo>PokeDecks</Logo>
+//       <NavBar user={user} setUser={setUser} />
+//       <main>
+//         <Switch>
+//           <Route path="/new">
+//             <CreateTeam user={user} />
+//           </Route>
+//           <Route path="/">
+//             <MainPage />
+//           </Route>
+//         </Switch>
+//       </main>
+//     </>
+//   );
+// }
+return (
+  <>
+  <div>
+    Test
 
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Login/>}/>
+      <Route path="/main-page" element={<MainPage/>}/>
+    </Routes>
+  </BrowserRouter>
+  </div>
+  </>
+)
+}
 export default App;
