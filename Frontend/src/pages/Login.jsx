@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import LoginForm from "/src/components/LoginForm";
 import SignUpForm from "/src/components/SignUpForm";
+import TeamList from "./MainPage";
 import { Button } from "../styles";
 //import {useNavigate} from "react-router-dom"
 
@@ -30,7 +31,7 @@ function Login({ onLogin }) {
           <p>
             Already have an account? &nbsp;
             <button onClick={() => {setShowLogin(true)
-          //navigate("/main-page")  
+          // navigate("/main-page")  
           }}>
               Log In
             </button>
