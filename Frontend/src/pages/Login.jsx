@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import LoginForm from "/src/components/LoginForm";
 import SignUpForm from "/src/components/SignUpForm";
+import MainPage from "/src/pages/MainPage";
 import { Button } from "../styles";
-//import {useNavigate} from "react-router-dom"
 
 
 function Login({ onLogin }) {
   const [showLogin, setShowLogin] = useState(true);
- //const navigate=useNavigate()
 
   return (
     <div className="Wrapper">
@@ -30,7 +29,6 @@ function Login({ onLogin }) {
           <p>
             Already have an account? &nbsp;
             <button onClick={() => {setShowLogin(true)
-          //navigate("/main-page")  
           }}>
               Log In
             </button>

@@ -3,7 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import NavBar from "./NavBar";
 import Login from "/src/pages/Login";
 import MainPage from "/src/pages/MainPage";
-// import CreateTeam from "/src/pages/create-team";
+import CreateTeam from "/src/pages/CreateTeam";
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -17,7 +18,7 @@ function App() {
     });
   }, []);
 
-  if (!user) return <Login onLogin={setUser} />;
+  // if (!user) return <Login onLogin={setUser} />;
 
 //   return (
 //     <>
@@ -43,8 +44,9 @@ return (
 
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Login/>}/>
+      <Route path="/" element={<Login onLogin={setUser}/>}/>
       <Route path="/main-page" element={<MainPage/>}/>
+      <Route path="/create-team" element={<CreateTeam/>}/>
     </Routes>
   </BrowserRouter>
   </div>
