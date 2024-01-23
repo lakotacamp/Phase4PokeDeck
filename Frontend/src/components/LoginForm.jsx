@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+//import { useNavigate } from 'react-router-dom';
 
 function LoginForm({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  //const navigate=useNavigate()
+  
   function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
-    fetch("/login", {
+    fetch("/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -49,9 +51,9 @@ function LoginForm({ onLogin }) {
           {isLoading ? "Loading..." : "Login"}
         </button>
 
-        {errors.map((err) => (
-          <Error key={err}>{err}</Error>
-        ))}
+        {/* {errors.map((err) => (
+        //  <Error key={err}>{err}</Error>
+        //))} */}
     </form>
   );
 }

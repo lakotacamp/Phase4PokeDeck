@@ -63,7 +63,7 @@ def check_session():
 def login():
     if request.method == 'POST':
         data = request.get_json()
-        user = Trainer.query.filter(Trainer.trainer == data["trainer"]).first()
+        user = Trainer.query.filter(Trainer.username == data["username"]).first()
         if user and user.authenticate(data['password']):
             session['user_id'] = user.id
             print(session)

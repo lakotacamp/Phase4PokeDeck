@@ -6,7 +6,7 @@ function SignUpForm({ onLogin }) {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+// const navigate=useNavigate()
   function handleSubmit(e) {
     e.preventDefault();
     setErrors([]);
@@ -67,8 +67,8 @@ function SignUpForm({ onLogin }) {
         <button type="submit" >{isLoading ? "Loading..." : "Sign Up"}</button>
     
         {/* {errors.map((err) => (
-          <Error key={err}>{err}</Error>
-        ))} */}
+          <Error key={err}>{err}</Error> */}
+ 
     </form>
   );
 }
