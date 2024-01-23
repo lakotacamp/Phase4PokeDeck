@@ -1,17 +1,16 @@
 
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 function CreateTeams () {
   const [pokemonList, setPokemonList] = useState([]);
-
   useEffect(() => {
     
-    axios.get("http://localhost:5555/api/pokemon")
-      // .then(r=>r.json())
+    fetch ("/api/pokemon")
+      .then(r=>r.json())
       .then(response => {
-        setPokemonList(response.data);
+        console.log(response)
+        setPokemonList(response);
       })
       .catch(error => {
         console.error('Error fetching Pokémon:', error);
