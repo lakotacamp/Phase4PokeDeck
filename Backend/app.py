@@ -124,9 +124,13 @@ def one_team_route(id):
 def pokemon_route():
     all_pokemons = Pokemon.query.all()
     dict_pokemons = []
-    for pokemon in all_pokemons:
-        dict_pokemons.append(pokemon.to_dict())
-        return make_response(dict_pokemons,200)
+    for i, pokemon in enumerate(all_pokemons):
+        if i < 12: 
+            dict_pokemons.append(pokemon.to_dict())
+        else:
+            break
+    return make_response(dict_pokemons, 200)
+
 
 @app.route('/poketeam', methods=['POST','DELETE'])
 def poketeam_route():
@@ -146,6 +150,33 @@ def poketeam_route():
         db.session.delete(new_poketeam)
         db.session.commit()
         return make_response({},204)
+    
+
+@app.route('/save-team', methods=['POST'])
+def save_team():
+    try:
+        data = request.get_json()
+        team_name = data.get('name')
+        selected_pokemons = data.get('selected_pokemons')
+
+
+        new_team = Team(
+            name=data['name']
+            )
+        db.session.add(new_team)
+        db.session.commit()
+
+
+        for pokemon_id in selected_pokemons:
+            new_poketeam = PokeTeam(team_id=new_team.id, pokemon_id=pokemon_id)
+            db.session.add(new_poketeam)
+
+        db.session.commit()
+
+        return new_team.to_dict(), 201
+    except Exception as e:
+        print(e)
+        return {"error": "Failed to save team"}, 400
 
 
    # name1 = data['name1']
