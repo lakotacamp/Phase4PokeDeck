@@ -124,9 +124,10 @@ def one_team_route(id):
 def pokemon_route():
     all_pokemons = Pokemon.query.all()
     dict_pokemons = []
-    for pokemon in all_pokemons:
-        dict_pokemons.append(pokemon.to_dict())
-        return make_response(dict_pokemons,200)
+    for i, pokemon in enumerate(all_pokemons):
+        if i < 12:
+            dict_pokemons.append(pokemon.to_dict())
+    return make_response(dict_pokemons,200)
 
 @app.route('/poketeam', methods=['POST','DELETE'])
 def poketeam_route():
@@ -146,6 +147,10 @@ def poketeam_route():
         db.session.delete(new_poketeam)
         db.session.commit()
         return make_response({},204)
+
+@app.route('/save-team', methods=['POST'])
+def save_team():
+    pass
 
 
    # name1 = data['name1']

@@ -16,8 +16,8 @@ function TeamList() {
   return (
     <div>
       {teams.length > 0 ? (
-              <ul>
-              {TeamList.map(team => (
+            <ul>
+              {teams.map(team => (
                 <li>
                   {team.name}
                 </li>
@@ -26,11 +26,11 @@ function TeamList() {
       ) : (
         <>
           <h2>No Teams Found</h2>
+        </>
+      )}
           <Button as={Link} to="/create-team">
             Build a New Team
           </Button>
-        </>
-      )}
     </div>
   );
 }

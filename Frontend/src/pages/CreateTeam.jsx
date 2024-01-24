@@ -29,15 +29,6 @@ function CreateTeams() {
     }
   };
 
-//  function addTeamForm(addTeam){   
-//   function submitTeam(e) {
-//       e.preventDefault()
-//         const newTeam = {
-//           team:e.target.team.value
-//         }
-//         addTeam(newTeam)
-//     }
-//   }
   function handleSubmitTeam(e) {
     e.preventDefault();
     fetch("/api/teams", {

@@ -72,7 +72,7 @@ def seed_pokemon_data():
     api_url = 'https://pokeapi.co/api/v2/pokemon/'
     response = requests.get(api_url)
 
-    if response.status_code: 
+    if response.status_code:
         pokemon_data = response.json()
         for pokemon in pokemon_data['results']:
             name = pokemon['name']
