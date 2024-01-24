@@ -7,7 +7,7 @@ function SignUpForm({ onLogin }) {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-const navigate=useNavigate()
+  const navigate=useNavigate()
   function handleSubmit(e) {
     e.preventDefault();
     setErrors([]);

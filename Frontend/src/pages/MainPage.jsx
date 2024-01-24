@@ -33,6 +33,7 @@ function TeamList() {
             <li key={team.id}>
               {team.name}
               <button onClick={() => deleteTeam(team.id)}>🗑️</button>
+              <Button as={Link} to="/edit-team">View</Button>
             </li>
           ))}
         </ul>

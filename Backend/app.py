@@ -142,12 +142,10 @@ def save_team():
     if request.method == "POST":
         data = request.get_json()
 
-        # Create a new Team
         new_team = Team(name=data['team_name'])
         db.session.add(new_team)
         db.session.flush()
 
-        # Create new Pokemons and associate them with the Team
         for pokemon_name in data['pokemon_names']:
             new_pokemon = Pokemon(name=pokemon_name)
             db.session.add(new_pokemon)
@@ -162,36 +160,6 @@ def save_team():
         except Exception as e:
             db.session.rollback()
             return jsonify(error=str(e), message='An error occurred, please try again'), 500
-
-
-# @app.route('/save-team', methods=['POST'])
-# def save_team():
-#     if request.method == "POST":
-#         data = request.get_json()
-#         new_team = Team(
-#         team_name = data['team_name'],
-#         )
-#         db.session.add(new_team)
-#         db.session.flush()
-
-#         new_pokemon = Pokemon(
-#             name = data["pokemon_name"]
-#         )
-#         db.session.add(new_pokemon)
-#         db.session.flush()
-
-#         new_poketeam = PokeTeam(
-#             team_id = new_team.id,
-#             pokemon_id = new_pokemon.id
-#             )
-#         db.session.add(new_poketeam)
-
-#         try:
-#             db.session.commit(),
-#             return jsonify(message='Team and Pokemon Created'),201,
-#         except Exception as e:
-#             db.session.rollback()
-#             return jsonify(error=str(e), message='An error occured, please try again'), 500
 
 """
 api.add_resource(Logout, '/logout', endpoint='logout')
