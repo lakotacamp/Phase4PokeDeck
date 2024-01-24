@@ -137,7 +137,7 @@ def poketeam_route():
         db.session.commit()
         return make_response({},204)
     
-@app.route('/save-team', methods=['POST'])
+@app.route('/save-team', methods=['POST','PATCH'])
 def save_team():
     if request.method == "POST":
         data = request.get_json()
