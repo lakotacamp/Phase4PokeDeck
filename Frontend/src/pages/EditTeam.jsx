@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function CreateTeams() {
+function EditTeams() {
   const [pokemonList, setPokemonList] = useState([]);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [team, setTeam] = useState([]);
@@ -66,7 +66,7 @@ function CreateTeams() {
 
   return (
     <div>
-      <h1>Create Teams Page</h1>
+      <h1>Edit Team Page</h1>
       <ul>
         {pokemonList.map(pokemon => (
           <li key={pokemon.id} onClick={() => handlePokemonClick(pokemon)}>
@@ -94,17 +94,17 @@ function CreateTeams() {
       <div>
         <form onSubmit={handleSubmitTeam}>
           <label>
-            New Team Name:
+            Team Name:
             <input type="text" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} />
           </label>
-          <button type="submit">Save Team</button>
+          <button type="submit">Save Changes</button>
         </form>
       </div>
       <div>
-        <button onClick={() => navigate("/main-page")}>Home</button>
+        <button onClick={() => navigate("/main-page")}>Back</button>
       </div>
     </div>
   );
 }
 
-export default CreateTeams;
+export default EditTeams;
