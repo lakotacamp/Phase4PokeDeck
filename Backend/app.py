@@ -1,5 +1,4 @@
 from flask import request, session
-#from flask_restful import Resource, 
 from sqlalchemy.exc import IntegrityError
 from flask import Flask, make_response, jsonify, request
 from flask_migrate import Migrate
@@ -10,16 +9,6 @@ import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASE = os.environ.get(
     "DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
-
-
-# app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.json.compact = False
-
-# migrate = Migrate(app, db)
-
-# db.init_app(app)
 
 
 @app.route('/')
@@ -72,7 +61,7 @@ def login():
             return {"Error": "Not valid trainer name or password"}, 401
         
 
-@app.route('/lougout', methods=['DELETE'])
+@app.route('/logout', methods=['DELETE'])
 def logout():
     if request.method == 'DELETE':
         session['trainer_id'] = None
@@ -125,12 +114,9 @@ def pokemon_route():
     all_pokemons = Pokemon.query.all()
     dict_pokemons = []
     for i, pokemon in enumerate(all_pokemons):
-        if i < 12: 
+        if i < 12:
             dict_pokemons.append(pokemon.to_dict())
-        else:
-            break
-    return make_response(dict_pokemons, 200)
-
+    return make_response(dict_pokemons,200)
 
 @app.route('/poketeam', methods=['POST','DELETE'])
 def poketeam_route():
@@ -151,46 +137,67 @@ def poketeam_route():
         db.session.commit()
         return make_response({},204)
     
-
 @app.route('/save-team', methods=['POST'])
 def save_team():
-    try:
+    if request.method == "POST":
         data = request.get_json()
-        team_name = data.get('name')
-        selected_pokemons = data.get('selected_pokemons')
 
-
-        new_team = Team(
-            name=data['name']
-            )
+        # Create a new Team
+        new_team = Team(name=data['team_name'])
         db.session.add(new_team)
-        db.session.commit()
+        db.session.flush()
 
+        # Create new Pokemons and associate them with the Team
+        for pokemon_name in data['pokemon_names']:
+            new_pokemon = Pokemon(name=pokemon_name)
+            db.session.add(new_pokemon)
+            db.session.flush()
 
-        for pokemon_id in selected_pokemons:
-            new_poketeam = PokeTeam(team_id=new_team.id, pokemon_id=pokemon_id)
+            new_poketeam = PokeTeam(team_id=new_team.id, pokemon_id=new_pokemon.id)
             db.session.add(new_poketeam)
 
-        db.session.commit()
+        try:
+            db.session.commit()
+            return jsonify(message='Team and Pokemon Created'), 201
+        except Exception as e:
+            db.session.rollback()
+            return jsonify(error=str(e), message='An error occurred, please try again'), 500
 
-        return new_team.to_dict(), 201
-    except Exception as e:
-        print(e)
-        return {"error": "Failed to save team"}, 400
 
+# @app.route('/save-team', methods=['POST'])
+# def save_team():
+#     if request.method == "POST":
+#         data = request.get_json()
+#         new_team = Team(
+#         team_name = data['team_name'],
+#         )
+#         db.session.add(new_team)
+#         db.session.flush()
 
-   # name1 = data['name1']
-                # name2 = data['name2']
-                # name3 = data['name3']
-                # name4 = data['name4']
-                # name5 = data['name5']
-                # name6 = data['name6']
+#         new_pokemon = Pokemon(
+#             name = data["pokemon_name"]
+#         )
+#         db.session.add(new_pokemon)
+#         db.session.flush()
+
+#         new_poketeam = PokeTeam(
+#             team_id = new_team.id,
+#             pokemon_id = new_pokemon.id
+#             )
+#         db.session.add(new_poketeam)
+
+#         try:
+#             db.session.commit(),
+#             return jsonify(message='Team and Pokemon Created'),201,
+#         except Exception as e:
+#             db.session.rollback()
+#             return jsonify(error=str(e), message='An error occured, please try again'), 500
 
 """
+api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Login, '/login', endpoint='login')
-api.add_resource(Logout, '/logout', endpoint='logout')
 """
 
 if __name__ == '__main__':
