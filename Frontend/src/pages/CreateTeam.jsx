@@ -1,46 +1,11 @@
-
-
-// // import React, { useState, useEffect } from 'react';
-
-// // // function CreateTeams () {
-// // //   const [pokemonList, setPokemonList] = useState([]);
-// // //   useEffect(() => {
-    
-// // //     fetch ("/api/pokemon")
-// // //       .then(r=>r.json())
-// // //       .then(response => {
-// // //         console.log(response)
-// // //         setPokemonList(response);
-// // //       })
-// // //       .catch(error => {
-// // //         console.error('Error fetching Pokémon:', error);
-// // //       });
-// // //   }, []); 
-
-
-  
-//   return (
-//     <div>
-//       <h1>Create Teams Page</h1>
-//       <ul>
-//         {pokemonList.map(pokemon => (
-//           <li key={pokemon.id}>
-//             {pokemon.name}
-//             </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default CreateTeams;
-
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function CreateTeams() {
   const [pokemonList, setPokemonList] = useState([]);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [team, setTeam] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetch("/api/pokemon")
@@ -58,11 +23,33 @@ function CreateTeams() {
   };
 
   const handleAddToTeam = () => {
-    if (selectedPokemon) {
+    if (selectedPokemon && team.length < 6) {
       setTeam(prevTeam => [...prevTeam, selectedPokemon]);
       setSelectedPokemon(null);
     }
   };
+
+//  function addTeamForm(addTeam){   
+//   function submitTeam(e) {
+//       e.preventDefault()
+//         const newTeam = {
+//           team:e.target.team.value
+//         }
+//         addTeam(newTeam)
+//     }
+//   }
+  function handleSubmitTeam(e) {
+    e.preventDefault();
+    fetch("/api/teams", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        team
+    }),
+  })
+}
 
   return (
     <div>
@@ -76,7 +63,7 @@ function CreateTeams() {
       </ul>
       <div>
         <h2>Selected Pokémon: {selectedPokemon ? selectedPokemon.name : 'None'}</h2>
-        <button onClick={handleAddToTeam} disabled={!selectedPokemon}>
+        <button onClick={handleAddToTeam} disabled={!selectedPokemon || team.length === 6}>
           Add to Team
         </button>
       </div>
@@ -87,6 +74,12 @@ function CreateTeams() {
             <li key={pokemon.id}>{pokemon.name}</li>
           ))}
         </ul>
+      </div>
+      <div>
+        <button onSubmit={(e)=>handleSubmitTeam(e)}>Save Team</button>
+      </div>
+      <div>
+        <button onClick={()=>{navigate("/main-page")}}>Home</button>
       </div>
     </div>
   );

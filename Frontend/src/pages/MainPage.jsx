@@ -8,7 +8,7 @@ function TeamList() {
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
-    fetch("/teams")
+    fetch("/api/teams")
       .then((r) => r.json())
       .then(setTeams);
   }, []);
@@ -16,14 +16,13 @@ function TeamList() {
   return (
     <div>
       {teams.length > 0 ? (
-        teams.map((team) => (
-          <Team key={team.id}>
-            <Box>
-              <h2>{team.title}</h2>
-              <ReactMarkdown>{team.pokemon.name}</ReactMarkdown>
-            </Box>
-          </Team>
-        ))
+              <ul>
+              {TeamList.map(team => (
+                <li>
+                  {team.name}
+                </li>
+              ))}
+            </ul>
       ) : (
         <>
           <h2>No Teams Found</h2>
