@@ -2,36 +2,49 @@ import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 import { Button } from "../styles";
-//import CreateTeam from "/src/pages/CreateTeam"
+
+
 
 function TeamList() {
   const [teams, setTeams] = useState([]);
-
+  
   useEffect(() => {
-    fetch("/teams")
-      .then((r) => r.json())
-      .then(setTeams);
+    fetch("/api/teams")
+    .then((r) => r.json())
+    .then(setTeams);
   }, []);
-
+  
+  const deleteTeam = (teamId) => {
+    fetch(`/api/teams/${teamId}`, {
+      method: "DELETE",
+    })
+    .then(() => {
+      setTeams((deletedTeams) => deletedTeams.filter((team) => team.id !== teamId));
+    })
+  };
+  
   return (
+    <div className="Wrapper">
+      <h1 className="Logo">PokeDecks</h1>
     <div>
       {teams.length > 0 ? (
-        teams.map((team) => (
-          <Team key={team.id}>
-            <Box>
-              <h2>{team.title}</h2>
-              <ReactMarkdown>{team.pokemon.name}</ReactMarkdown>
-            </Box>
-          </Team>
-        ))
+        <ul>
+          {teams.map((team) => (
+            <li key={team.id}>
+              {team.name}
+              <button onClick={() => deleteTeam(team.id)}>🗑️</button>
+            </li>
+          ))}
+        </ul>
       ) : (
         <>
           <h2>No Teams Found</h2>
-          <Button as={Link} to="/create-team">
-            Build a New Team
-          </Button>
         </>
       )}
+      <Button as={Link} to="/create-team">
+        Build a New Team
+      </Button>
+    </div>
     </div>
   );
 }
