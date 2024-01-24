@@ -32,7 +32,7 @@ function TeamList() {
           {teams.map((team) => (
             <li key={team.id}>
               {team.name}
-              <button onClick={() => deleteTeam(team.id)}>Delete</button>
+              <button onClick={() => deleteTeam(team.id)}>🗑️</button>
             </li>
           ))}
         </ul>

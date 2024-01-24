@@ -136,18 +136,62 @@ def poketeam_route():
         db.session.delete(new_poketeam)
         db.session.commit()
         return make_response({},204)
-
+    
 @app.route('/save-team', methods=['POST'])
 def save_team():
-    pass
+    if request.method == "POST":
+        data = request.get_json()
+
+        # Create a new Team
+        new_team = Team(name=data['team_name'])
+        db.session.add(new_team)
+        db.session.flush()
+
+        # Create new Pokemons and associate them with the Team
+        for pokemon_name in data['pokemon_names']:
+            new_pokemon = Pokemon(name=pokemon_name)
+            db.session.add(new_pokemon)
+            db.session.flush()
+
+            new_poketeam = PokeTeam(team_id=new_team.id, pokemon_id=new_pokemon.id)
+            db.session.add(new_poketeam)
+
+        try:
+            db.session.commit()
+            return jsonify(message='Team and Pokemon Created'), 201
+        except Exception as e:
+            db.session.rollback()
+            return jsonify(error=str(e), message='An error occurred, please try again'), 500
 
 
-   # name1 = data['name1']
-                # name2 = data['name2']
-                # name3 = data['name3']
-                # name4 = data['name4']
-                # name5 = data['name5']
-                # name6 = data['name6']
+# @app.route('/save-team', methods=['POST'])
+# def save_team():
+#     if request.method == "POST":
+#         data = request.get_json()
+#         new_team = Team(
+#         team_name = data['team_name'],
+#         )
+#         db.session.add(new_team)
+#         db.session.flush()
+
+#         new_pokemon = Pokemon(
+#             name = data["pokemon_name"]
+#         )
+#         db.session.add(new_pokemon)
+#         db.session.flush()
+
+#         new_poketeam = PokeTeam(
+#             team_id = new_team.id,
+#             pokemon_id = new_pokemon.id
+#             )
+#         db.session.add(new_poketeam)
+
+#         try:
+#             db.session.commit(),
+#             return jsonify(message='Team and Pokemon Created'),201,
+#         except Exception as e:
+#             db.session.rollback()
+#             return jsonify(error=str(e), message='An error occured, please try again'), 500
 
 """
 api.add_resource(Logout, '/logout', endpoint='logout')

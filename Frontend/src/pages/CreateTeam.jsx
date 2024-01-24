@@ -5,7 +5,8 @@ function CreateTeams() {
   const [pokemonList, setPokemonList] = useState([]);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [team, setTeam] = useState([]);
-  const navigate = useNavigate()
+  const [newTeamName, setNewTeamName] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/api/pokemon")
@@ -29,18 +30,35 @@ function CreateTeams() {
     }
   };
 
-  function handleSubmitTeam(e) {
+  const handleSubmitTeam = (e) => {
     e.preventDefault();
-    fetch("/api/teams", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        team
-    }),
-  })
-}
+    // You may want to add validation before submitting
+    if (newTeamName && team.length > 0 && team.length <= 6) {
+      const data = {
+        team_name: newTeamName,
+        // Assuming you want to send an array of selected Pokemon names
+        pokemon_names: team.map(pokemon => pokemon.name),
+      };
+
+      fetch("/api/save-team", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => {
+          if (response.ok) {
+            setNewTeamName('');
+            setTeam([]);
+            navigate("/main-page");
+          } else {
+            throw new Error('Team creation failed');
+          }
+        })
+        .catch(error => console.error('Error submitting team:', error));
+    }
+  };
 
   return (
     <div>
@@ -67,13 +85,20 @@ function CreateTeams() {
         </ul>
       </div>
       <div>
-        <button onSubmit={(e)=>handleSubmitTeam(e)}>Save Team</button>
+        <form onSubmit={handleSubmitTeam}>
+          <label>
+            New Team Name:
+            <input type="text" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} />
+          </label>
+          <button type="submit">Save Team</button>
+        </form>
       </div>
       <div>
-        <button onClick={()=>{navigate("/main-page")}}>Home</button>
+        <button onClick={() => navigate("/main-page")}>Home</button>
       </div>
     </div>
   );
 }
 
 export default CreateTeams;
+
