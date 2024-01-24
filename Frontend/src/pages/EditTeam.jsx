@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function EditTeams() {
   const [pokemonList, setPokemonList] = useState([]);
@@ -7,68 +7,74 @@ function EditTeams() {
   const [team, setTeam] = useState([]);
   const [newTeamName, setNewTeamName] = useState('');
   const navigate = useNavigate();
+  const { teamId } = useParams();
 
   useEffect(() => {
+    fetch(`/api/teams/${teamId}`)
+      .then((response) => response.json())
+      .then((teamData) => {
+        setNewTeamName(teamData.name);
+        setTeam(teamData.poke_teams.map((pokeTeam) => pokeTeam.pokemon));
+      })
+      .catch((error) => {
+        console.error('Error fetching team details:', error);
+      });
+
     fetch("/api/pokemon")
-      .then(r => r.json())
-      .then(response => {
+      .then((response) => response.json())
+      .then((response) => {
         setPokemonList(response);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error fetching Pokémon:', error);
       });
-  }, []);
+  }, [teamId]);
 
   const handlePokemonClick = (pokemon) => {
     setSelectedPokemon(pokemon);
   };
 
   const handleAddToTeam = () => {
-    if (selectedPokemon && team.length < 6 && !team.some(p => p.id === selectedPokemon.id)) {
-      setTeam(prevTeam => [...prevTeam, selectedPokemon]);
+    if (selectedPokemon && team.length < 6 && !team.some((p) => p.id === selectedPokemon.id)) {
+      setTeam((prevTeam) => [...prevTeam, selectedPokemon]);
       setSelectedPokemon(null);
     }
   };
 
   const handleRemoveFromTeam = (pokemonId) => {
-    setTeam(prevTeam => prevTeam.filter(p => p.id !== pokemonId));
+    setTeam((prevTeam) => prevTeam.filter((p) => p.id !== pokemonId));
   };
 
   const handleSubmitTeam = (e) => {
     e.preventDefault();
-    // You may want to add validation before submitting
-    if (newTeamName && team.length > 0 && team.length <= 6) {
-      const data = {
-        team_name: newTeamName,
-        // Assuming you want to send an array of selected Pokemon names
-        pokemon_names: team.map(pokemon => pokemon.name),
-      };
+    const data = {
+      team_id: teamId,
+      team_name: newTeamName,
+      pokemon_names: team.map((pokemon) => pokemon.name),
+    };
 
-      fetch("/api/save-team", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+    fetch(`/api/save-team`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (response.ok) {
+          navigate("/main-page");
+        } else {
+          throw new Error('Team update failed');
+        }
       })
-        .then(response => {
-          if (response.ok) {
-            setNewTeamName('');
-            setTeam([]);
-            navigate("/main-page");
-          } else {
-            throw new Error('Team creation failed');
-          }
-        })
-        .catch(error => console.error('Error submitting team:', error));
-    }
+      .catch((error) => console.error('Error updating team:', error));
   };
 
   return (
     <div>
       <h1>Edit Team Page</h1>
       <ul>
-        {pokemonList.map(pokemon => (
+        {pokemonList.map((pokemon) => (
           <li key={pokemon.id} onClick={() => handlePokemonClick(pokemon)}>
             {pokemon.name}
           </li>
@@ -83,7 +89,7 @@ function EditTeams() {
       <div>
         <h2>Selected Team:</h2>
         <ul>
-          {team.map(pokemon => (
+          {team.map((pokemon) => (
             <li key={pokemon.id}>
               {pokemon.name}
               <button onClick={() => handleRemoveFromTeam(pokemon.id)}>🗑️</button>

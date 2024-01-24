@@ -137,17 +137,19 @@ def poketeam_route():
         db.session.commit()
         return make_response({},204)
     
-@app.route('/save-team', methods=['POST','PATCH'])
+@app.route('/save-team', methods=['POST', 'PATCH'])
 def save_team():
     if request.method == "POST":
         data = request.get_json()
+        existing_team = Team.query.filter_by(name=data['team_name']).first()
+        
+        if existing_team:
+            return jsonify(error='Team with this name already exists'), 400
 
-        # Create a new Team
         new_team = Team(name=data['team_name'])
         db.session.add(new_team)
         db.session.flush()
 
-        # Create new Pokemons and associate them with the Team
         for pokemon_name in data['pokemon_names']:
             new_pokemon = Pokemon(name=pokemon_name)
             db.session.add(new_pokemon)
@@ -163,35 +165,39 @@ def save_team():
             db.session.rollback()
             return jsonify(error=str(e), message='An error occurred, please try again'), 500
 
+    elif request.method == "PATCH":
+        data = request.get_json()
 
-# @app.route('/save-team', methods=['POST'])
-# def save_team():
-#     if request.method == "POST":
-#         data = request.get_json()
-#         new_team = Team(
-#         team_name = data['team_name'],
-#         )
-#         db.session.add(new_team)
-#         db.session.flush()
+        team_id = data.get('team_id')
+        existing_team = Team.query.get(team_id)
 
-#         new_pokemon = Pokemon(
-#             name = data["pokemon_name"]
-#         )
-#         db.session.add(new_pokemon)
-#         db.session.flush()
+        if not existing_team:
+            return jsonify(error='Team not found'), 404
 
-#         new_poketeam = PokeTeam(
-#             team_id = new_team.id,
-#             pokemon_id = new_pokemon.id
-#             )
-#         db.session.add(new_poketeam)
+        if 'team_name' in data:
+            existing_team.name = data['team_name']
 
-#         try:
-#             db.session.commit(),
-#             return jsonify(message='Team and Pokemon Created'),201,
-#         except Exception as e:
-#             db.session.rollback()
-#             return jsonify(error=str(e), message='An error occured, please try again'), 500
+        if 'pokemon_names' in data:
+            existing_team.poke_teams = []
+
+            for pokemon_name in data['pokemon_names']:
+                existing_pokemon = Pokemon.query.filter_by(name=pokemon_name).first()
+
+                if not existing_pokemon:
+                    existing_pokemon = Pokemon(name=pokemon_name)
+                    db.session.add(existing_pokemon)
+                    db.session.flush()
+
+                new_poketeam = PokeTeam(team_id=existing_team.id, pokemon_id=existing_pokemon.id)
+                db.session.add(new_poketeam)
+
+        try:
+            db.session.commit()
+            return jsonify(message='Team updated successfully'), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify(error=str(e), message='An error occurred while updating the team'), 500
+
 
 """
 api.add_resource(Logout, '/logout', endpoint='logout')

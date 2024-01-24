@@ -32,11 +32,9 @@ function CreateTeams() {
 
   const handleSubmitTeam = (e) => {
     e.preventDefault();
-    // You may want to add validation before submitting
     if (newTeamName && team.length > 0 && team.length <= 6) {
       const data = {
         team_name: newTeamName,
-        // Assuming you want to send an array of selected Pokemon names
         pokemon_names: team.map(pokemon => pokemon.name),
       };
 
