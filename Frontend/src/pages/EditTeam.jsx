@@ -48,56 +48,60 @@ function EditTeams() {
   const handleSubmitTeam = (e) => {
     e.preventDefault();
     if (newTeamName && team.length > 0 && team.length <= 6) {
-        const data = {
-            team_name: newTeamName,
-            pokemon_names: team.map(pokemon => pokemon.name),
-        };
-
-        fetch("/api/save-team", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        })
-            .then(response => {
-                if (response.ok) {
-                    setNewTeamName('');
-                    setTeam([]);
-                    navigate("/main-page");
-                } else {
-                    throw new Error('Team creation failed');
-                }
-            })
-            .catch(error => console.error('Error submitting team:', error));
-    }
-};
+      const data = {
+        team_id: teamId, // Include the team ID in the data payload
+        team_name: newTeamName,
+        pokemon_names: team.map(pokemon => pokemon.name),
+      };
   
-  // // const handleSubmitTeam = (e) => {
-  // //   e.preventDefault();
-  // //   const data = {
-  // //     team_id: teamId,
-  // //     team_name: newTeamName,
-  // //     pokemon_names: team.map((pokemon) => pokemon.name),
-  // //   };
+      fetch(`/api/save-team`, {
+        method: "PATCH", // Use PATCH method instead of POST
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => {
+          if (response.ok) {
+            setNewTeamName('');
+            setTeam([]);
+            navigate("/main-page");
+          } else {
+            throw new Error('Team update failed');
+          }
+        })
+        .catch(error => console.error('Error updating team:', error));
+    }
+  };
 
-  //   fetch(`/api/save-team`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => {
-  //       if (response.ok) {
-  //         navigate("/main-page");
-  //       } else {
-  //         throw new Error('Team update failed');
-  //       }
-  //     })
-  //     .catch((error) => console.error('Error updating team:', error));
-  // };
+//     const handleSubmitTeam = (e) => {
+//     e.preventDefault();
+//     if (newTeamName && team.length > 0 && team.length <= 6) {
+//         const data = {
+//             team_name: newTeamName,
+//             pokemon_names: team.map(pokemon => pokemon.name),
+//         };
 
+//         fetch("/api/save-team", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify(data),
+//         })
+//             .then(response => {
+//                 if (response.ok) {
+//                     setNewTeamName('');
+//                     setTeam([]);
+//                     navigate("/main-page");
+//                 } else {
+//                     throw new Error('Team creation failed');
+//                 }
+//             })
+//             .catch(error => console.error('Error submitting team:', error));
+//     }
+// };
+  
   return (
     <div>
       <h1>Edit Team Page</h1>

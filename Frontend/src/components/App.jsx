@@ -27,8 +27,8 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/" element={<Login onLogin={setUser} />} />
-            <Route path="/main-page" element={<MainPage user={user}/>} />
-            <Route path="/create-team" element={<CreateTeam />} />
+            <Route path="/main-page" element={<MainPage user={user} setUser={setUser}/>} />
+            <Route path="/create-team" element={<CreateTeam setUser={setUser}/>} />
             <Route path="/edit-team/:teamId" element={<EditTeam />} /> 
           </Routes>
         </BrowserRouter>

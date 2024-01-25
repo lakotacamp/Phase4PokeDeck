@@ -177,7 +177,7 @@ def save_team():
 
         if 'team_name' in data:
             existing_team.name = data['team_name']
-
+            
         if 'pokemon_names' in data:
             existing_team.poke_teams = []
 
