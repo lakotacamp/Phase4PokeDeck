@@ -48,6 +48,7 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
   width: 70%;
+  margin: auto
   
 }
 button:hover {
@@ -71,17 +72,7 @@ button:focus-visible {
   }
 }
 
-.trashbutton {
-  border: none;
-  color: white;
-  padding: 10px 20px; /* Adjust padding */
-  margin-left: 25px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  width: auto; 
-}
+
 
 .teamName {
   font-weight: bold;
@@ -143,4 +134,38 @@ div {
 .select{
   margin: auto;
   text-align: center;
+}
+
+.addToTeam{
+  text-align: center;
+  margin: auto;
+}
+
+.trashbutton {
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  margin-right: 10px; /* Adjust margin-right */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  width: auto;
+}
+
+.view {
+  margin-left: 10px; /* Adjust margin-left */
+}
+
+.Teamlist {
+  margin-bottom: 100px;
+}
+
+.Logout {
+  text-align: left;
+  margin: -100px;
+}
+
+.Navbar {
+  text-align: left;
 }

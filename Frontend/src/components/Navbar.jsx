@@ -11,13 +11,13 @@ function NavBar({ user, setUser }) {
   }
 
   return (
-    <nav>
+    <nav className="Navbar">
       <div>
         <Link to="/">Logout</Link>
       </div>
       <div>
         {user && (
-          <button onClick={handleLogoutClick}>
+          <button className="Logout" onClick={handleLogoutClick}>
             Logout
           </button>
         )}

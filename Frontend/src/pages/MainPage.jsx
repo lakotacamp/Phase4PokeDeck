@@ -32,10 +32,10 @@ function TeamList({ user }) {
         {user?.team?.length > 0 ? (
           <ul>
             {teams.map((team) => (
-              <li key={team.id}>
+              <li key={team.id} className="Teamlist" style={{listStyleType:"None"}}>
                 <span className="teamName">{team.name}</span>
                 <button onClick={() => deleteTeam(team.id)} className="login" >🗑️</button>
-                <Button as={Link} to={`/edit-team/${team.id}`}>
+                <Button className="view" as={Link} to={`/edit-team/${team.id}`}>
                   View
                 </Button>
               </li>

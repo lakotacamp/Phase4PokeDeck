@@ -70,7 +70,7 @@ function CreateTeams() {
       </ul>
       <div className = "select">
         <h2 className='selectedPokemon'> Selected Pokemon: {selectedPokemon ? selectedPokemon.name : 'None'}</h2>
-        <button onClick={handleAddToTeam} disabled={!selectedPokemon || team.length === 6}>
+        <button className="addToTeam" onClick={handleAddToTeam} disabled={!selectedPokemon || team.length === 6}>
           Add to Team
         </button>
       </div>
