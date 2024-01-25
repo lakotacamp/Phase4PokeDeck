@@ -36,7 +36,7 @@ function SignUpForm({ onLogin }) {
   return (
     <form onSubmit={handleSubmit}>
       
-        <label htmlFor="username">Username</label>
+        <label className="signup" htmlFor="username">Username</label>
         <input
           type="text"
           id="username"
@@ -46,7 +46,7 @@ function SignUpForm({ onLogin }) {
         />
      
      
-        <label htmlFor="password">Password</label>
+        <label className="signup" htmlFor="password">Password</label>
         <input
           type="password"
           id="password"
@@ -56,7 +56,7 @@ function SignUpForm({ onLogin }) {
         />
      
      
-        <label htmlFor="password">Password Confirmation</label>
+        <label className="signup" htmlFor="password">Password Confirmation</label>
         <input
           type="password"
           id="password_confirmation"
