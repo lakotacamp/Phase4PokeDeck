@@ -76,7 +76,7 @@ function CreateTeams() {
       </div>
       <div>
         <h2 className='selectedTeam'>Selected Team:</h2>
-        <ul classname = "pokemon">
+        <ul className = "pokemon">
           {team.map(pokemon => (
             <li key={pokemon.id}>{pokemon.name}</li>
           ))}
