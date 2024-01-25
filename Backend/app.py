@@ -45,6 +45,7 @@ def signup():
 @app.route('/checksession',methods=['GET'])
 def check_session():
     if request.method == 'GET':
+        print(session)
         user = Trainer.query.filter(Trainer.id == session["trainer_id"]).first()
         return user.to_dict(rules = ('-teams','-password_hash')),200
     
@@ -52,11 +53,11 @@ def check_session():
 def login():
     if request.method == 'POST':
         data = request.get_json()
-        user = Trainer.query.filter(Trainer.username == data["username"]).first()
-        if user and user.authenticate(data['password']):
-            session['user_id'] = user.id
+        trainer = Trainer.query.filter(Trainer.username == data["username"]).first()
+        if trainer and trainer.authenticate(data['password']):
+            session['trainer_id'] = trainer.id
             print(session)
-            return user.to_dict(rules = ('-teams','-password_hash')),200
+            return trainer.to_dict(rules = ('-teams','-password_hash')),200
         else:
             return {"Error": "Not valid trainer name or password"}, 401
         
@@ -141,29 +142,29 @@ def poketeam_route():
 def save_team():
     if request.method == "POST":
         data = request.get_json()
-        existing_team = Team.query.filter_by(name=data['team_name']).first()
-        
-        if existing_team:
-            return jsonify(error='Team with this name already exists'), 400
 
-        new_team = Team(name=data['team_name'])
-        db.session.add(new_team)
-        db.session.flush()
+        # Retrieve the trainer ID from the session
+        trainer_id = session.get("trainer_id")
 
-        for pokemon_name in data['pokemon_names']:
-            new_pokemon = Pokemon(name=pokemon_name)
-            db.session.add(new_pokemon)
-            db.session.flush()
-
-            new_poketeam = PokeTeam(team_id=new_team.id, pokemon_id=new_pokemon.id)
-            db.session.add(new_poketeam)
-
-        try:
+        if trainer_id:
+            new_team = Team(name=data['team_name'], trainer_id=trainer_id)
+            db.session.add(new_team)
             db.session.commit()
-            return jsonify(message='Team and Pokemon Created'), 201
-        except Exception as e:
-            db.session.rollback()
-            return jsonify(error=str(e), message='An error occurred, please try again'), 500
+
+            for pokemon_name in data['pokemon_names']:
+                new_pokemon = Pokemon(name=pokemon_name)
+                db.session.add(new_pokemon)
+                db.session.commit()
+
+                new_poketeam = PokeTeam(team_id=new_team.id, pokemon_id=new_pokemon.id)
+                db.session.add(new_poketeam)
+
+            try:
+                db.session.commit()
+                return jsonify(message='Team and Pokemon Created'), 201
+            except Exception as e:
+                db.session.rollback()
+                return jsonify(error=str(e), message='An error occurred, please try again'), 500
 
     elif request.method == "PATCH":
         data = request.get_json()

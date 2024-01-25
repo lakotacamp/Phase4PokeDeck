@@ -11,12 +11,14 @@ function App() {
 
   useEffect(() => {
     // auto-login
-    fetch("/check_session").then((r) => {
+    fetch("/api/checksession").then((r) => {
       if (r.ok) {
         r.json().then((user) => setUser(user));
       }
     });
   }, []);
+
+  console.log(user)
 
   return (
     <>
@@ -25,7 +27,7 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/" element={<Login onLogin={setUser} />} />
-            <Route path="/main-page" element={<MainPage />} />
+            <Route path="/main-page" element={<MainPage user={user}/>} />
             <Route path="/create-team" element={<CreateTeam />} />
             <Route path="/edit-team/:teamId" element={<EditTeam />} /> 
           </Routes>

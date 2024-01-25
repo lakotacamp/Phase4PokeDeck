@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../styles";
 
-function TeamList() {
-  const [teams, setTeams] = useState([]);
+function TeamList({user}) {
+  // const [teams, setTeams] = useState([]);
 
-  useEffect(() => {
-    fetch("/api/teams")
-      .then((r) => r.json())
-      .then(setTeams);
-  }, []);
+  // useEffect(() => {
+  //   fetch(`/api/teams/${teamId}`)
+  //     .then((r) => r.json())
+  //     .then(setTeams);
+  // }, []);
 
   const deleteTeam = (teamId) => {
     fetch(`/api/teams/${teamId}`, {
@@ -20,14 +20,15 @@ function TeamList() {
       );
     });
   };
+  console.log(user?.team)
 
   return (
     <div className="Wrapper">
       <h1 className="Logo">PokeDecks</h1>
       <div>
-        {teams.length > 0 ? (
+        {user?.team?.length > 0 ? (
           <ul>
-            {teams.map((team) => (
+            {user.team.map((team) => (
               <li key={team.id}>
                 {team.name}
                 <button onClick={() => deleteTeam(team.id)}>🗑️</button>
