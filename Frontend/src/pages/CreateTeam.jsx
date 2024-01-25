@@ -61,14 +61,14 @@ function CreateTeams() {
   return (
     <div>
       <h1 className='createTeams'>Create Teams Page</h1>
-      <ul>
+      <ul className = "pokemonList">
         {pokemonList.map(pokemon => (
-          <li key={pokemon.id} onClick={() => handlePokemonClick(pokemon)}>
+          <li key={pokemon.id}style={{listStyleType:"None"}} onClick={() => handlePokemonClick(pokemon)}>
             {pokemon.name}
           </li>
         ))}
       </ul>
-      <div>
+      <div className = "select">
         <h2 className='selectedPokemon'> Selected Pokemon: {selectedPokemon ? selectedPokemon.name : 'None'}</h2>
         <button onClick={handleAddToTeam} disabled={!selectedPokemon || team.length === 6}>
           Add to Team
@@ -76,7 +76,7 @@ function CreateTeams() {
       </div>
       <div>
         <h2 className='selectedTeam'>Selected Team:</h2>
-        <ul>
+        <ul classname = "pokemon">
           {team.map(pokemon => (
             <li key={pokemon.id}>{pokemon.name}</li>
           ))}

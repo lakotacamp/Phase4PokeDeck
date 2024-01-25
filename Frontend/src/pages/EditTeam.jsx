@@ -113,7 +113,7 @@ function EditTeams() {
         ))}
       </ul>
       <div>
-        <h2>Selected Pokémon: {selectedPokemon ? selectedPokemon.name : 'None'}</h2>
+        <h2>Selected Pokemon: {selectedPokemon ? selectedPokemon.name : 'None'}</h2>
         <button onClick={handleAddToTeam} disabled={!selectedPokemon || team.length === 6}>
           Add to Team
         </button>
@@ -124,7 +124,7 @@ function EditTeams() {
           {team.map((pokemon) => (
             <li key={pokemon.id}>
               {pokemon.name}
-              <button onClick={() => handleRemoveFromTeam(pokemon.id)}>🗑️</button>
+              <button className="trashbutton" onClick={() => handleRemoveFromTeam(pokemon.id)}>🗑️</button>
             </li>
           ))}
         </ul>

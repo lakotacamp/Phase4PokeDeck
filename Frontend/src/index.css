@@ -23,11 +23,13 @@ a:hover {
 }
 
 body {
-  margin: 0;
+  margin: auto;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  /* text-align: center; */
+
 }
 
 h1 {
@@ -46,6 +48,7 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
   width: 70%;
+  
 }
 button:hover {
   border-color: #646cff;
@@ -72,7 +75,7 @@ button:focus-visible {
   border: none;
   color: white;
   padding: 10px 20px; /* Adjust padding */
-  margin-right: 50px;
+  margin-left: 25px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -83,16 +86,16 @@ button:focus-visible {
 .teamName {
   font-weight: bold;
   font-family: Early GameBoy;
-  font-size: 50px;
-  color: #333; /* Example color */
-  margin-right: 50px;
+  font-size: 20px;
+  color: #333; 
+  margin: auto;
 }
 
 .signup {
   font-weight: bold;
   font-family: Early GameBoy;
   font-size: 50px;
-  color: #333; /* Example color */
+  color: #333; 
   margin-right: 50px;
 }
 
@@ -102,12 +105,42 @@ button:focus-visible {
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
+  margin: auto;
+  
 }
 
 h1 {
   font-family: Early GameBoy;
+  
 }
 
 h2 {
   font-family: Early GameBoy;
+
+}
+
+div {
+  width: auto;
+  margin: auto
+
+}
+
+.login {
+  
+  width: auto;
+  margin: auto;
+}
+
+.pokemon{
+  margin: auto;
+}
+
+.pokemonList{
+  margin: auto;
+  text-align: center;
+}
+
+.select{
+  margin: auto;
+  text-align: center;
 }

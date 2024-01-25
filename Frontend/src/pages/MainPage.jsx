@@ -34,7 +34,7 @@ function TeamList({ user }) {
             {teams.map((team) => (
               <li key={team.id}>
                 <span className="teamName">{team.name}</span>
-                <button className="trashbutton" onClick={() => deleteTeam(team.id)}>🗑️</button>
+                <button onClick={() => deleteTeam(team.id)} className="login" >🗑️</button>
                 <Button as={Link} to={`/edit-team/${team.id}`}>
                   View
                 </Button>

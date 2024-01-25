@@ -16,7 +16,7 @@ function Login({ onLogin }) {
           <hr className="Divider" />
           <p>
             Don't have an account? &nbsp;
-            <button onClick={() => setShowLogin(false)}>
+            <button className="login" onClick={() => setShowLogin(false)}>
               Sign Up
             </button>
           </p>
@@ -27,7 +27,7 @@ function Login({ onLogin }) {
           <hr className="Divider" />
           <p>
             Already have an account? &nbsp;
-            <button onClick={() => {setShowLogin(true)
+            <button className="login" onClick={() => {setShowLogin(true)
           }}>
               Log In
             </button>
