@@ -9,7 +9,7 @@ function Login({ onLogin }) {
 
   return (
     <div className="Wrapper">
-      <h1 className="Logo">PokeDecks</h1>
+      {/* <h1 className="Logo">PokeDecks</h1> */}
       {showLogin ? (
         <>
           <LoginForm onLogin={onLogin} />
@@ -25,7 +25,7 @@ function Login({ onLogin }) {
         <>
           <SignUpForm onLogin={onLogin} />
           <hr className="Divider" />
-          <p>
+          <p className="Account">
             Already have an account? &nbsp;
             <button className="login" onClick={() => {setShowLogin(true)
           }}>

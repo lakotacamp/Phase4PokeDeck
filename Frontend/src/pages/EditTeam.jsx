@@ -76,7 +76,7 @@ function EditTeams() {
 
   return (
     <div>
-      <h1>Edit Team Page</h1>
+      <h2>Edit Team Page</h2>
       <ul>
         {pokemonList.map((pokemon) => (
           <li className="PokemonList" key={pokemon.id} style={{listStyleType:"None"}} onClick={() => handlePokemonClick(pokemon)}>

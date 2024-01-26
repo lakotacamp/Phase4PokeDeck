@@ -25,6 +25,7 @@ function App() {
       <div>
         <BrowserRouter>
           <NavBar />
+          <h1 className="Logo">PokeDecks</h1>
           <Routes>
             <Route path="/" element={<Login onLogin={setUser} />} />
             <Route path="/main-page" element={<MainPage user={user} setUser={setUser}/>} />

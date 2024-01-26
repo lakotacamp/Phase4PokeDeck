@@ -27,7 +27,7 @@ function TeamList({ user }) {
 
   return (
     <div className="Wrapper">
-      <h1 className="Logo">PokeDecks</h1>
+      {/* <h1 className="Logo">PokeDecks</h1> */}
       <div>
         {user?.team?.length > 0 ? (
           <ul>
